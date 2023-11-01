@@ -1,6 +1,9 @@
-var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+using Microservices;
+using Microsoft.AspNetCore.Hosting;
+using Polly;
+using ShoppingCart.Abstractions;
+using ShoppingCart.ShoppingCart;
 
-app.MapGet("/", () => "Hello World!");
-
-app.Run();
+var builder = Host.CreateDefaultBuilder(args)
+    .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>());
+builder.Build().Run();
