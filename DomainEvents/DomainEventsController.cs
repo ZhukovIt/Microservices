@@ -9,7 +9,7 @@ using ShoppingCart.Abstractions;
 namespace ShoppingCart.DomainEvents
 {
     [ApiController]
-    [Route("/events")]
+    [Route("api/events")]
     public class DomainEventsController : Controller
     {
         private IEventStore m_EventStore;
@@ -19,7 +19,7 @@ namespace ShoppingCart.DomainEvents
             m_EventStore = _EventStore;
         }
         //------------------------------------------------------------------------------------------
-        [HttpGet()]
+        [HttpGet("")]
         public IReadOnlyList<Event> GetAllEventsInTheRange([FromQuery] long start, [FromQuery] long end)
         {
             return m_EventStore.GetEvents(start, end);

@@ -9,8 +9,8 @@ using ShoppingCart.Models;
 
 namespace ShoppingCart.ShoppingCart
 {
+    [Route("api/shoppingcart")]
     [ApiController]
-    [Route("/shoppingcart")]
     public class ShoppingCartController : Controller
     {
         private readonly IShoppingCartStore m_ShoppingCartStore;
@@ -33,13 +33,13 @@ namespace ShoppingCart.ShoppingCart
             return "Микросервис ShoppingCart работает!";
         }
         //--------------------------------------------------------------------------------------
-        [HttpGet("/{userid:int}")]
+        [HttpGet("{userid:int}")]
         public ShoppingCartContent GetShoppingCartByUserId(int userid)
         {
             return m_ShoppingCartStore.Get(userid);
         }
         //--------------------------------------------------------------------------------------
-        [HttpPost("/{userid:int}/items")]
+        [HttpPost("{userid:int}/items")]
         public async Task<ShoppingCartContent> AddNewProductsInUserShoppingCart(int userid, [FromBody] int[] _ProductCatalogIds)
         {
             ShoppingCartContent shoppingCart = m_ShoppingCartStore.Get(userid);
@@ -52,7 +52,7 @@ namespace ShoppingCart.ShoppingCart
             return shoppingCart;
         }
         //--------------------------------------------------------------------------------------
-        [HttpDelete("/{userid:int}/items")]
+        [HttpDelete("{userid:int}/items")]
         public ShoppingCartContent DeleteProductsInUserShoppingCart(int userid, [FromBody] int[] _ProductCatalogIds)
         {
             ShoppingCartContent shoppingCart = m_ShoppingCartStore.Get(userid);

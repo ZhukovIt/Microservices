@@ -1,6 +1,8 @@
 ﻿using Polly;
 using ShoppingCart.Abstractions;
 using ShoppingCart.ShoppingCart;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Microservices
 {
@@ -26,7 +28,7 @@ namespace Microservices
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/", async context => await context.Response.WriteAsync("Hello server!"));
+                endpoints.MapGet("/", async context => await context.Response.WriteAsync("Server is launch!"));
                 endpoints.MapControllers();
             });
         }
