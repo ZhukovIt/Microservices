@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microservices.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,17 +7,11 @@ using System.Threading.Tasks;
 
 namespace ShoppingCart.DomainEvents
 {
-    public sealed class Event
+    public sealed class Event : Entity
     {
-        private long m_SequenceNumber;
         private DateTimeOffset m_OccuredAt;
         private string m_Name;
         private object m_Content;
-        //------------------------------------------------------------
-        public long SequenceNumber
-        {
-            get { return m_SequenceNumber; }
-        }
         //------------------------------------------------------------
         public DateTimeOffset OccuredAt
         {
@@ -33,9 +28,8 @@ namespace ShoppingCart.DomainEvents
             get { return m_Content; }
         }
         //------------------------------------------------------------
-        public Event(long _SequenceNumber, DateTimeOffset _OccuredAt, string _Name, object _Content)
+        public Event(long _SequenceNumber, DateTimeOffset _OccuredAt, string _Name, object _Content) : base(_SequenceNumber)
         {
-            m_SequenceNumber = _SequenceNumber;
             m_OccuredAt = _OccuredAt;
             m_Name = _Name;
             m_Content = _Content;

@@ -33,7 +33,7 @@ namespace ShoppingCart.Models
         {
             foreach (int productCatalogId in _ProductCatalogIds)
             {
-                ShoppingCartItem currentItem = m_Items.FirstOrDefault(sci => sci.ProductId == productCatalogId);
+                ShoppingCartItem? currentItem = m_Items.FirstOrDefault(sci => sci.ProductId == productCatalogId);
                 if (currentItem != null && m_Items.Remove(currentItem))
                     _EventStore.Raise(
                         "ShoppingCartItemDelete",

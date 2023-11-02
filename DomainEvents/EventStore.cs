@@ -28,8 +28,8 @@ namespace ShoppingCart.DomainEvents
         public IReadOnlyList<Event> GetEvents(long _Start, long _End)
         {
             return m_Database
-                .Where(e => e.SequenceNumber >= _Start && e.SequenceNumber <= _End)
-                .OrderBy(e => e.SequenceNumber)
+                .Where(e => e.Id >= _Start && e.Id <= _End)
+                .OrderBy(e => e.Id)
                 .ToList();
         }
         //----------------------------------------------------------
