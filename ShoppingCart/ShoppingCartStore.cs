@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microservices.ShoppingCart;
 using ShoppingCart.Abstractions;
 using ShoppingCart.Models;
 
@@ -10,11 +11,11 @@ namespace ShoppingCart.ShoppingCart
 {
     public sealed class ShoppingCartStore : IShoppingCartStore
     {
-        private readonly Dictionary<int, ShoppingCartContent> m_Database;
+        private readonly ApplicationDBContext m_Context;
         //---------------------------------------------------------------
-        public ShoppingCartStore()
+        public ShoppingCartStore(ApplicationDBContext _Context)
         {
-            m_Database = new Dictionary<int, ShoppingCartContent>();
+            m_Context = _Context;
         }
         //---------------------------------------------------------------
         public ShoppingCartContent Get(int _UserId)

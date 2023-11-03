@@ -1,4 +1,6 @@
-﻿using Polly;
+﻿using Microservices.ShoppingCart;
+using Microsoft.EntityFrameworkCore;
+using Polly;
 using ShoppingCart.Abstractions;
 using ShoppingCart.ShoppingCart;
 using System.Diagnostics;
@@ -8,8 +10,19 @@ namespace Microservices
 {
     public class Startup
     {
+        public Startup(IConfiguration config) 
+        {
+            Configuration = config;
+        }
+
+        public IConfiguration Configuration { get; }
+
         public void ConfigureServices(IServiceCollection services)
         {
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(connectionString));
+            
+
             services.Scan(selector => selector
         .FromAssemblyOf<Startup>()
         .AddClasses(c => c.Where(t => t != typeof(ProductCatalogClient) && t.GetMethods().All(m => m.Name != "<Clone>$")))

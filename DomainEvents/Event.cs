@@ -9,30 +9,15 @@ namespace ShoppingCart.DomainEvents
 {
     public sealed class Event : Entity
     {
-        private DateTimeOffset m_OccuredAt;
-        private string m_Name;
-        private object m_Content;
+        public DateTimeOffset OccuredAt { get; set; }
         //------------------------------------------------------------
-        public DateTimeOffset OccuredAt
-        {
-            get { return m_OccuredAt; }
-        }
+        public string Name { get; set; }
         //------------------------------------------------------------
-        public string Name
-        {
-            get { return m_Name; }
-        }
+        public string Content { get; set; }
         //------------------------------------------------------------
-        public object Content
+        public Event() : base()
         {
-            get { return m_Content; }
-        }
-        //------------------------------------------------------------
-        public Event(long _SequenceNumber, DateTimeOffset _OccuredAt, string _Name, object _Content) : base(_SequenceNumber)
-        {
-            m_OccuredAt = _OccuredAt;
-            m_Name = _Name;
-            m_Content = _Content;
+
         }
         //------------------------------------------------------------
     }

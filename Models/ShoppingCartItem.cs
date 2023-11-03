@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microservices.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ShoppingCart.Models
 {
-    public sealed class ShoppingCartItem
+    public sealed class ShoppingCartItem : Entity
     {
         private readonly int m_ProductId;
         private readonly string m_ProductName;
