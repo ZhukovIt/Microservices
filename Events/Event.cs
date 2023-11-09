@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShoppingCart.DomainEvents
+namespace ShoppingCart.Events
 {
     public sealed class Event : Entity
     {

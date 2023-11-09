@@ -8,7 +8,7 @@ using Microservices.ShoppingCart;
 using Newtonsoft.Json;
 using ShoppingCart.Abstractions;
 
-namespace ShoppingCart.DomainEvents
+namespace ShoppingCart.Events
 {
     public sealed class EventStore : IEventStore
     {

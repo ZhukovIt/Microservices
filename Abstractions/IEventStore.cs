@@ -1,4 +1,4 @@
-﻿using ShoppingCart.DomainEvents;
+﻿using ShoppingCart.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;

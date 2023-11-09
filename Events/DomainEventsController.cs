@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingCart.Abstractions;
 
-namespace ShoppingCart.DomainEvents
+namespace ShoppingCart.Events
 {
     [ApiController]
     [Route("api/events")]
