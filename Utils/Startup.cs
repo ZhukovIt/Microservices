@@ -1,16 +1,16 @@
-﻿using Microservices.ShoppingCart;
+﻿using Api.ProductCatalogs;
+using Microservices.ShoppingCart;
 using Microsoft.EntityFrameworkCore;
 using Polly;
 using ShoppingCart.Abstractions;
-using ShoppingCart.ShoppingCart;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Microservices
+namespace Api.Utils
 {
     public class Startup
     {
-        public Startup(IConfiguration config) 
+        public Startup(IConfiguration config)
         {
             Configuration = config;
         }

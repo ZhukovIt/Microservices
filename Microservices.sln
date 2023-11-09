@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{6E
 		Database.sql = Database.sql
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic", "..\Logic\Logic.csproj", "{D7F4DB81-D00A-4E6F-AF94-CCF52F75B615}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCartLogic", "..\Logic\ShoppingCartLogic.csproj", "{D7F4DB81-D00A-4E6F-AF94-CCF52F75B615}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
