@@ -21,7 +21,6 @@ namespace Microservices
         {
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(connectionString));
-            
 
             services.Scan(selector => selector
         .FromAssemblyOf<Startup>()

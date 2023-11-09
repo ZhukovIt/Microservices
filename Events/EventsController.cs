@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingCart.Abstractions;
 
-namespace ShoppingCart.Events
+namespace Api.Events
 {
     [ApiController]
     [Route("api/events")]
-    public class DomainEventsController : Controller
+    public class EventsController : Controller
     {
         private IEventStore m_EventStore;
         //------------------------------------------------------------------------------------------
-        public DomainEventsController(IEventStore _EventStore)
+        public EventsController(IEventStore _EventStore)
         {
             m_EventStore = _EventStore;
         }

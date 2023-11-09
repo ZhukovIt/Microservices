@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShoppingCart.DomainEvents;
+using ShoppingCart.Events;
 
 namespace Microservices.ShoppingCart
 {
