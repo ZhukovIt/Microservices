@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using ShoppingCart.Abstractions;
+﻿using Microsoft.AspNetCore.Mvc;
+using ShoppingCartLogic.Events;
 
 namespace Api.Events
 {
@@ -12,9 +7,9 @@ namespace Api.Events
     [Route("api/events")]
     public class EventsController : Controller
     {
-        private IEventStore m_EventStore;
+        private EventStore m_EventStore;
         //------------------------------------------------------------------------------------------
-        public EventsController(IEventStore _EventStore)
+        public EventsController(EventStore _EventStore)
         {
             m_EventStore = _EventStore;
         }

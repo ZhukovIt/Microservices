@@ -1,10 +1,11 @@
-﻿using Api.ProductCatalogs;
-using Microservices.ShoppingCart;
+﻿using CSharpFunctionalExtensions;
+using Logic.Utils;
 using Microsoft.EntityFrameworkCore;
 using Polly;
-using ShoppingCart.Abstractions;
-using System.Diagnostics;
-using System.Linq;
+using ShoppingCartLogic.Events;
+using ShoppingCartLogic.OtherMicroservicesClients;
+using ShoppingCartLogic.ShoppingCarts;
+using ShoppingCartLogic.Utils;
 
 namespace Api.Utils
 {
@@ -19,14 +20,15 @@ namespace Api.Utils
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(connectionString));
-
-            services.Scan(selector => selector
-        .FromAssemblyOf<Startup>()
-        .AddClasses(c => c.Where(t => t != typeof(ProductCatalogClient) && t.GetMethods().All(m => m.Name != "<Clone>$")))
-        .AsImplementedInterfaces());
-            services.AddHttpClient<IProductCatalogClient, ProductCatalogClient>()
+            string connectionName = "DefaultConnection";
+            Maybe<string> connectionStringOrNull = Configuration[connectionName].AsMaybe();
+            if (connectionStringOrNull.HasNoValue)
+                throw new KeyNotFoundException($"Не удалось найти строку подключения с ConnectionName = {connectionName}!");
+            services.AddSingleton(new SessionFactory(connectionStringOrNull.Value));
+            services.AddScoped<UnitOfWork>();
+            services.AddTransient<ShoppingCartStore>();
+            services.AddTransient<EventStore>();
+            services.AddHttpClient<ProductCatalogClient>()
               .AddTransientHttpErrorPolicy(p =>
                 p.WaitAndRetryAsync(
                   3,
