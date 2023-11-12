@@ -1,8 +1,8 @@
-﻿using Api.Utils;
+﻿using Api.OtherMicroservicesClients;
+using Api.Utils;
 using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingCartLogic.Events;
-using ShoppingCartLogic.OtherMicroservicesClients;
 using ShoppingCartLogic.ShoppingCarts;
 using ShoppingCartLogic.Utils;
 
@@ -39,34 +39,48 @@ namespace Api.ShoppingCarts
         {
             Maybe<ShoppingCart> shoppingCartOrError = _ShoppingCartStore.GetByUserId(userid);
             if (shoppingCartOrError.HasNoValue)
-                return Error($"Корзина покупок для пользователя с Id = {userid} отсутствует!");
+                return NotFound($"Корзина покупок для пользователя с Id = {userid} отсутствует!");
 
-            return Ok(shoppingCartOrError.Value);
+            ShoppingCartDto dto = new ShoppingCartDto(shoppingCartOrError.Value);
+
+            return Ok(dto);
         }
         //--------------------------------------------------------------------------------------
         [HttpPost]
         [Route("{userid:int}/items")]
-        public async Task<ShoppingCart> AddNewProductsInUserShoppingCart(int userid, [FromBody] int[] _ProductCatalogIds)
+        public async Task<IActionResult> AddNewProductsInUserShoppingCart(int userid, [FromBody] AddNewProductsDto items)
         {
-            ShoppingCart shoppingCart = _ShoppingCartStore.GetByUserId(userid);
+            Maybe<ShoppingCart> shoppingCartOrError = _ShoppingCartStore.GetByUserId(userid);
+            if (shoppingCartOrError.HasNoValue)
+                return NotFound($"Корзина покупок для пользователя с Id = {userid} отсутствует!");
+            ShoppingCart shoppingCart = shoppingCartOrError.Value;
+
             IEnumerable<ShoppingCartItem> shoppingCartItems = await _ProductCatalog
-                .GetShoppingCartItems(_ProductCatalogIds)
+                .GetShoppingCartItems(items.ProductCatalogIds)
                 .ConfigureAwait(false);
             shoppingCart.AddItems(shoppingCartItems, _EventStore);
             _ShoppingCartStore.Add(shoppingCart);
 
-            return shoppingCart;
+            ShoppingCartDto dto = new ShoppingCartDto(shoppingCart);
+
+            return Ok(dto);
         }
         //--------------------------------------------------------------------------------------
         [HttpDelete]
         [Route("{userid:int}/items")]
-        public ShoppingCart DeleteProductsInUserShoppingCart(int userid, [FromBody] int[] _ProductCatalogIds)
+        public IActionResult DeleteProductsInUserShoppingCart(int userid, [FromBody] DeleteProductsDto items)
         {
-            ShoppingCart shoppingCart = _ShoppingCartStore.Get(userid);
-            shoppingCart.RemoveItems(_ProductCatalogIds, _EventStore);
-            _ShoppingCartStore.Save(shoppingCart);
+            Maybe<ShoppingCart> shoppingCartOrError = _ShoppingCartStore.GetByUserId(userid);
+            if (shoppingCartOrError.HasNoValue)
+                return NotFound($"Корзина покупок для пользователя с Id = {userid} отсутствует!");
+            ShoppingCart shoppingCart = shoppingCartOrError.Value;
 
-            return shoppingCart;
+            shoppingCart.RemoveItems(items.ProductCatalogIds, _EventStore);
+            _ShoppingCartStore.Add(shoppingCart);
+
+            ShoppingCartDto dto = new ShoppingCartDto(shoppingCart);
+
+            return Ok(dto);
         }
         //--------------------------------------------------------------------------------------
     }

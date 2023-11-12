@@ -1,9 +1,7 @@
-﻿using CSharpFunctionalExtensions;
-using Logic.Utils;
-using Microsoft.EntityFrameworkCore;
+﻿using Api.OtherMicroservicesClients;
+using CSharpFunctionalExtensions;
 using Polly;
 using ShoppingCartLogic.Events;
-using ShoppingCartLogic.OtherMicroservicesClients;
 using ShoppingCartLogic.ShoppingCarts;
 using ShoppingCartLogic.Utils;
 
@@ -21,7 +19,7 @@ namespace Api.Utils
         public void ConfigureServices(IServiceCollection services)
         {
             string connectionName = "DefaultConnection";
-            Maybe<string> connectionStringOrNull = Configuration[connectionName].AsMaybe();
+            Maybe<string> connectionStringOrNull = Configuration.GetConnectionString(connectionName).AsMaybe();
             if (connectionStringOrNull.HasNoValue)
                 throw new KeyNotFoundException($"Не удалось найти строку подключения с ConnectionName = {connectionName}!");
             services.AddSingleton(new SessionFactory(connectionStringOrNull.Value));
