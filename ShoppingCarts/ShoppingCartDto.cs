@@ -19,7 +19,7 @@ namespace Api.ShoppingCarts
                 Id = x.Id,
                 ProductCatalogId = x.ProductCatalogId,
                 ProductName = x.ProductName,
-                ProductDescription = x.ProductDescription.Value.Value,
+                ProductDescription = x.ProductDescription.Value.HasValue ? x.ProductDescription.Value.Value : null,
                 Money = new MoneyDto()
                 {
                     Amount = x.Money.Amount,

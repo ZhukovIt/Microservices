@@ -7,8 +7,8 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[ShoppingCart](
-	[ID] [int] IDENTITY(1,1) NOT NULL,
-	[UserID] [int] NOT NULL,
+	[ShoppingCartID] [int] IDENTITY(1,1) NOT NULL,
+	[UserId] [int] NOT NULL,
  CONSTRAINT [PK_ShoppingCart] PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC
@@ -19,10 +19,10 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[ShoppingCartItems](
-	[ID] [int] IDENTITY(1,1) NOT NULL,
+CREATE TABLE [dbo].[ShoppingCartItem](
+	[ShoppingCartItemID] [int] IDENTITY(1,1) NOT NULL,
 	[ShoppingCartID] [int] NOT NULL,
-	[ProductCatalogID] [bigint] NOT NULL,
+	[ProductCatalogId] [bigint] NOT NULL,
 	[ProductName] [nvarchar](100) NOT NULL,
 	[ProductDescription] [nvarchar](500) NULL,
 	[Amount] [int] NOT NULL,

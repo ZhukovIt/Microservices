@@ -10,6 +10,6 @@ namespace Api.OtherMicroservicesClients
 
         public string ProductDescription { get; set; }
 
-        public MoneyDto Money { get; set; }
+        public MoneyDto Price { get; set; }
     }
 }

@@ -38,8 +38,8 @@ namespace Api.OtherMicroservicesClients
             return productsDto.Select(p => new ShoppingCartItem(
                 (ForeignKeyId)(int)p.ProductId,
                 (ProductName)p.ProductName,
-                (ProductDescription)p.ProductDescription.AsMaybe(),
-                Money.Create(p.Money.Amount, p.Money.Currency).Value));
+                (ProductDescription)p.ProductDescription,
+                Money.Create(p.Price.Amount, p.Price.Currency).Value));
         }
     }
 }

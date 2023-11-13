@@ -1,5 +1,6 @@
 ﻿using Api.OtherMicroservicesClients;
 using CSharpFunctionalExtensions;
+using Microsoft.Data.SqlClient;
 using Polly;
 using ShoppingCartLogic.Events;
 using ShoppingCartLogic.ShoppingCarts;
@@ -25,6 +26,7 @@ namespace Api.Utils
             services.AddSingleton(new SessionFactory(connectionStringOrNull.Value));
             services.AddScoped<UnitOfWork>();
             services.AddTransient<ShoppingCartStore>();
+            services.AddTransient<ShoppingCartItemStore>();
             services.AddTransient<EventStore>();
             services.AddHttpClient<ProductCatalogClient>()
               .AddTransientHttpErrorPolicy(p =>

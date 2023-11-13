@@ -1,7 +1,9 @@
 ﻿using Api.OtherMicroservicesClients;
 using Api.Utils;
 using CSharpFunctionalExtensions;
+using FluentNHibernate.Conventions.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using ShoppingCartLogic.Common;
 using ShoppingCartLogic.Events;
 using ShoppingCartLogic.ShoppingCarts;
 using ShoppingCartLogic.Utils;
@@ -13,6 +15,7 @@ namespace Api.ShoppingCarts
     public class ShoppingCartController : BaseController
     {
         private readonly ShoppingCartStore _ShoppingCartStore;
+        private readonly ShoppingCartItemStore _ShoppingCartItemStore;
         private readonly ProductCatalogClient _ProductCatalog;
         private readonly EventStore _EventStore;
         //--------------------------------------------------------------------------------------
@@ -20,9 +23,11 @@ namespace Api.ShoppingCarts
             UnitOfWork _UnitOfWork,
             ProductCatalogClient _ProductCatalog,
             ShoppingCartStore _ShoppingCartStore,
+            ShoppingCartItemStore _ShoppingCartItemStore,
             EventStore _EventStore) : base(_UnitOfWork)
         {
             this._ShoppingCartStore = _ShoppingCartStore;
+            this._ShoppingCartItemStore = _ShoppingCartItemStore;
             this._ProductCatalog = _ProductCatalog;
             this._EventStore = _EventStore;
         }
@@ -47,6 +52,26 @@ namespace Api.ShoppingCarts
         }
         //--------------------------------------------------------------------------------------
         [HttpPost]
+        [Route("{userid:int}")]
+        public IActionResult AddNewShoppingCartByUserId(int userid)
+        {
+            Result<ForeignKeyId> userIdOrError = ForeignKeyId.Create(userid);
+            if (userIdOrError.IsFailure)
+                return Error(userIdOrError.Error);
+
+            Maybe<ShoppingCart> shoppingCartOrError = _ShoppingCartStore.GetByUserId(userid);
+            if (shoppingCartOrError.HasValue)
+                return Error($"Корзина покупок для пользователя с Id = {userid} уже существует!");
+
+            ShoppingCart shoppingCart = new ShoppingCart(userIdOrError.Value);
+            _ShoppingCartStore.Add(shoppingCart);
+
+            ShoppingCartDto dto = new ShoppingCartDto(shoppingCart);
+
+            return Ok(dto);
+        }
+        //--------------------------------------------------------------------------------------
+        [HttpPost]
         [Route("{userid:int}/items")]
         public async Task<IActionResult> AddNewProductsInUserShoppingCart(int userid, [FromBody] AddNewProductsDto items)
         {
@@ -59,6 +84,7 @@ namespace Api.ShoppingCarts
                 .GetShoppingCartItems(items.ProductCatalogIds)
                 .ConfigureAwait(false);
             shoppingCart.AddItems(shoppingCartItems, _EventStore);
+            _ShoppingCartItemStore.Add(shoppingCart.Items);
             _ShoppingCartStore.Add(shoppingCart);
 
             ShoppingCartDto dto = new ShoppingCartDto(shoppingCart);
